@@ -1,0 +1,193 @@
+<div class="image-gen-kazuma-settings">
+    <div class="inline-drawer">
+        <div class="inline-drawer-toggle inline-drawer-header">
+            <b>Image Gen Kazuma</b>
+            <div class="inline-drawer-icon fa-solid fa-circle-chevron-down down"></div>
+        </div>
+        <div class="inline-drawer-content">
+
+            <!-- MAIN SWITCHES -->
+            <div class="flex-container">
+                <label class="checkbox_label"><input id="kazuma_enable" type="checkbox" /> Enable Extension</label>
+            </div>
+            <div class="flex-container">
+                <label class="checkbox_label">
+                    <input id="kazuma_compress" type="checkbox" />
+                    Compress Images (Fix Lag)
+                </label>
+            </div>
+
+            <hr>
+
+            <!-- AUTO GENERATION -->
+            <label>Auto-Generation:</label>
+            <div class="flex-container">
+                <label class="checkbox_label">
+                    <input id="kazuma_auto_enable" type="checkbox" />
+                    Auto-Generate after reply
+                </label>
+            </div>
+            <div class="flex-container" style="align-items: center; margin-top: 5px;">
+                <span>Every</span>
+                <input type="number" id="kazuma_auto_freq" class="text_pole" value="1" min="1" style="width: 50px; margin: 0 10px;">
+                <span>reply(s)</span>
+            </div>
+
+            <hr>
+
+            <!-- DEBUG -->
+            <div class="flex-container">
+                <label class="checkbox_label"><input id="kazuma_debug" type="checkbox" /> Diagnostic Mode</label>
+            </div>
+
+            <hr>
+            <label>Prompt Gen Preset:</label>
+            <div class="flex-container">
+                <select id="kazuma_profile" class="text_pole">
+                    <option value="">Loading...</option>
+                </select>
+            </div>
+
+            <hr>
+
+            <!-- WORKFLOW TOOLBAR -->
+            <label>ComfyUI Workflow:</label>
+            <div style="display: flex; gap: 5px; align-items: center; margin-bottom: 5px;">
+                <select id="kazuma_workflow_list" class="text_pole" style="flex-grow: 1;">
+                    <option disabled>Loading...</option>
+                </select>
+                <div id="kazuma_new_workflow" class="menu_button fa-solid fa-plus" title="New Workflow" style="cursor: pointer; width: 30px; text-align:center;"></div>
+                <div id="kazuma_edit_workflow" class="menu_button fa-solid fa-pen-to-square" title="Edit Workflow" style="cursor: pointer; width: 30px; text-align:center;"></div>
+                <div id="kazuma_delete_workflow" class="menu_button fa-solid fa-trash" title="Delete Workflow" style="cursor: pointer; width: 30px; text-align:center;"></div>
+            </div>
+
+            <hr>
+            <label>Image Parameters:</label>
+
+            <!-- MODEL -->
+            <div class="flex-container" style="margin-bottom: 5px;">
+                <span style="width: 60px;">Model:</span>
+                <select id="kazuma_model_list" class="text_pole" style="flex-grow:1;"><option>Connecting...</option></select>
+            </div>
+
+            <!-- SAMPLER -->
+             <div class="flex-container" style="margin-bottom: 5px;">
+                <span style="width: 60px;">Sampler:</span>
+                <select id="kazuma_sampler_list" class="text_pole" style="flex-grow:1;"><option>euler</option></select>
+            </div>
+
+            <!-- SLIDERS -->
+            <div class="flex-container" style="flex-direction: column; align-items: stretch; gap: 5px;">
+                <!-- Steps -->
+                <div style="display: flex; justify-content: space-between;"><small>Sampling Steps</small></div>
+                <div style="display: flex; align-items: center;">
+                    <input id="kazuma_steps" type="range" min="1" max="100" step="1" value="20" style="flex-grow: 1; margin-right: 5px;">
+                    <input id="kazuma_steps_val" type="number" class="text_pole" value="20" style="width: 50px;">
+                </div>
+                <!-- CFG -->
+                <div style="display: flex; justify-content: space-between;"><small>CFG Scale</small></div>
+                <div style="display: flex; align-items: center;">
+                    <input id="kazuma_cfg" type="range" min="1" max="30" step="0.5" value="7" style="flex-grow: 1; margin-right: 5px;">
+                    <input id="kazuma_cfg_val" type="number" class="text_pole" value="7" step="0.1" style="width: 50px;">
+                </div>
+                <!-- Denoise -->
+                <div style="display: flex; justify-content: space-between;"><small>Denoising Strength</small></div>
+                <div style="display: flex; align-items: center;">
+                    <input id="kazuma_denoise" type="range" min="0" max="1" step="0.05" value="0.5" style="flex-grow: 1; margin-right: 5px;">
+                    <input id="kazuma_denoise_val" type="number" class="text_pole" value="0.5" step="0.01" style="width: 50px;">
+                </div>
+                <!-- CLIP -->
+                <div style="display: flex; justify-content: space-between;"><small>CLIP Skip</small></div>
+                <div style="display: flex; align-items: center;">
+                    <input id="kazuma_clip" type="range" min="1" max="12" step="1" value="1" style="flex-grow: 1; margin-right: 5px;">
+                    <input id="kazuma_clip_val" type="number" class="text_pole" value="1" style="width: 50px;">
+                </div>
+            </div>
+            <hr>
+
+            <!-- LORA 1 -->
+            <div class="flex-container" style="margin-bottom: 2px;">
+                <span style="width: 60px;">LoRA 1:</span>
+                <select id="kazuma_lora_list" class="text_pole" style="flex-grow:1;"><option>Connecting...</option></select>
+            </div>
+            <div class="flex-container" style="align-items: center;">
+                <span style="width: 60px; font-size: 0.8em; opacity: 0.7; text-align: right; padding-right: 5px;">Wt:</span>
+                <input id="kazuma_lora_wt" type="range" min="0" max="2" step="0.1" value="1.0" style="flex-grow: 1;">
+                <span id="kazuma_lora_wt_display" style="width: 30px; text-align: right; font-size: 0.8em;">1.0</span>
+            </div>
+
+            <!-- COLLAPSIBLE EXTRA LORAS -->
+            <details style="margin-bottom: 10px; cursor: pointer; margin-top: 5px;">
+                <summary style="font-size: 0.9em; opacity: 0.7; user-select: none;">🔽 Advanced LoRA Slots (2-4)</summary>
+                <div style="padding: 5px; border-left: 2px solid var(--interactable-color);">
+                    <!-- LORA 2 -->
+                    <div class="flex-container" style="margin-top: 5px; margin-bottom: 2px;">
+                        <span style="width: 60px;">LoRA 2:</span>
+                        <select id="kazuma_lora_list_2" class="text_pole" style="flex-grow:1;"><option>Connecting...</option></select>
+                    </div>
+                    <div class="flex-container" style="margin-bottom: 10px; align-items: center;">
+                        <span style="width: 60px; font-size: 0.8em; opacity: 0.7; text-align: right; padding-right: 5px;">Wt:</span>
+                        <input id="kazuma_lora_wt_2" type="range" min="0" max="2" step="0.1" value="1.0" style="flex-grow: 1;">
+                        <span id="kazuma_lora_wt_display_2" style="width: 30px; text-align: right; font-size: 0.8em;">1.0</span>
+                    </div>
+                    <!-- LORA 3 -->
+                    <div class="flex-container" style="margin-top: 5px; margin-bottom: 2px;">
+                        <span style="width: 60px;">LoRA 3:</span>
+                        <select id="kazuma_lora_list_3" class="text_pole" style="flex-grow:1;"><option>Connecting...</option></select>
+                    </div>
+                    <div class="flex-container" style="margin-bottom: 10px; align-items: center;">
+                        <span style="width: 60px; font-size: 0.8em; opacity: 0.7; text-align: right; padding-right: 5px;">Wt:</span>
+                        <input id="kazuma_lora_wt_3" type="range" min="0" max="2" step="0.1" value="1.0" style="flex-grow: 1;">
+                        <span id="kazuma_lora_wt_display_3" style="width: 30px; text-align: right; font-size: 0.8em;">1.0</span>
+                    </div>
+                    <!-- LORA 4 -->
+                    <div class="flex-container" style="margin-top: 5px; margin-bottom: 2px;">
+                        <span style="width: 60px;">LoRA 4:</span>
+                        <select id="kazuma_lora_list_4" class="text_pole" style="flex-grow:1;"><option>Connecting...</option></select>
+                    </div>
+                    <div class="flex-container" style="margin-bottom: 10px; align-items: center;">
+                        <span style="width: 60px; font-size: 0.8em; opacity: 0.7; text-align: right; padding-right: 5px;">Wt:</span>
+                        <input id="kazuma_lora_wt_4" type="range" min="0" max="2" step="0.1" value="1.0" style="flex-grow: 1;">
+                        <span id="kazuma_lora_wt_display_4" style="width: 30px; text-align: right; font-size: 0.8em;">1.0</span>
+                    </div>
+                </div>
+            </details>
+
+            <!-- NEGATIVE PROMPT -->
+            <label>Negative Prompt:</label>
+            <textarea id="kazuma_negative" class="text_pole" rows="3" placeholder="bad quality, blurry" style="margin-bottom: 10px;"></textarea>
+
+            <!-- SIZE & SEED -->
+            <div class="flex-container" style="margin-bottom: 2px;">
+                <span style="width: 60px;">Preset:</span>
+                <select id="kazuma_resolution_list" class="text_pole" style="flex-grow:1;"><option>Custom</option></select>
+            </div>
+
+            <div class="flex-container" style="margin-bottom: 5px;">
+                <span style="width: 60px;">Size:</span>
+                <input type="number" id="kazuma_width" class="text_pole" placeholder="W" style="width: 35%; margin-right: 5px;" value="1024">
+                <span>x</span>
+                <input type="number" id="kazuma_height" class="text_pole" placeholder="H" style="width: 35%; margin-left: 5px;" value="1024">
+            </div>
+
+             <div class="flex-container">
+                <span style="width: 60px;">Seed:</span>
+                <input type="number" id="kazuma_seed" class="text_pole" placeholder="-1 = Random" value="-1" style="flex-grow: 1;">
+            </div>
+
+            <hr>
+            <label>ComfyUI URL:</label>
+            <div class="flex-container">
+                <input type="text" id="kazuma_url" class="text_pole" placeholder="http://127.0.0.1:8188" />
+            </div>
+            <div class="flex-container" style="margin-top: 5px;">
+                <input id="kazuma_test_btn" type="button" class="menu_button" value="Test Connection" />
+            </div>
+
+            <hr>
+            <div class="flex-container" style="margin-top: 5px;">
+                <input id="kazuma_gen_prompt_btn" type="button" class="menu_button" value="Test LLM Prompt Gen" />
+            </div>
+        </div>
+    </div>
+</div>

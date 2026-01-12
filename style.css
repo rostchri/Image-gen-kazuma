@@ -1,0 +1,41 @@
+.image-gen-kazuma-settings .flex-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 5px;
+    gap: 10px;
+}
+
+.image-gen-kazuma-settings .text_pole {
+    height: 30px;
+}
+
+.image-gen-kazuma-settings input[type=range] {
+    vertical-align: middle;
+    cursor: pointer;
+    margin: 0 5px;
+}
+
+.image-gen-kazuma-settings small {
+    display: block;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    opacity: 0.6;
+    font-size: 0.85em;
+    font-style: italic;
+}
+
+#kazuma_quick_gen i:hover {
+    color: var(--smart-theme-color);
+    text-shadow: 0 0 10px var(--smart-theme-color);
+    transition: 0.2s;
+}
+
+.image-gen-kazuma-settings details {
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    padding: 5px;
+}
+.image-gen-kazuma-settings details[open] {
+    padding-bottom: 10px;
+}
