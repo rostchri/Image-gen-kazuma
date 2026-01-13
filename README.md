@@ -1,78 +1,140 @@
 # 🎨 Image Gen Kazuma
 
-An advanced, feature-rich **ComfyUI** integration for **SillyTavern**.
-This extension replaces the need for the core Stable Diffusion extension if you are a ComfyUI power user.
+**The Ultimate ComfyUI Integration for SillyTavern.**
 
-## ✨ Features
+Image Gen Kazuma is a power-user extension designed to seamlessly bridge **SillyTavern** with **ComfyUI**. It goes beyond simple image generation by giving you full control over workflows, smart prompting logic, and persistent settings—all without leaving your chat window.
 
-*   **⚡ Smart Integration:** Images appear as native SillyTavern attachments (Gallery view).
-*   **🚀 Zero Lag:** Auto-compresses high-res ComfyUI images to optimized JPEGs so your chat history never slows down.
-*   **🔁 Swipe-to-Regenerate:** Swipe right on the *last* generated image to instantly create a new variation with the same prompt.
-*   **🤖 Auto-Generation:** Automatically visualize the scenario after every AI reply (or every Nth reply).
-*   **🛠️ Workflow Manager:**
-    *   Import, Create, Edit, and Delete ComfyUI workflows directly inside SillyTavern.
-    *   Server-side saving (workflows persist across reloads).
-    *   Built-in JSON Editor with syntax highlighting for placeholders.
-*   **🎛️ Total Control:**
-    *   Support for **4 Simultaneous LoRAs** with individual weight sliders.
-    *   Adjust Steps, CFG, Denoise, and Sampler on the fly.
-    *   Random or Fixed Seeds.
+---
 
-## 📦 Installation
+## ✨ Key Features
 
-1.  Open **SillyTavern** -> **Extensions** -> **Install Extension**.
-2.  Paste the URL of this repository.
-3.  Click **Install**.
-4.  Reload SillyTavern.
+### 🧠 Smart & Context-Aware
+*   **Smart Prompting Logic:** Automatically formats prompts based on your preferred model style (e.g., Booru tags for Pony/Illustrious vs. Natural Language for SDXL) and camera perspective.
+*   **Workflow Context Switching:** The extension remembers your settings (Steps, CFG, LoRAs) *per workflow*. Switch from an SDXL workflow to an SD1.5 workflow, and all your sliders instantly snap to your last used configuration for that file.
+*   **Diagnostic Mode:** Preview and edit the exact prompt the LLM generated before sending it to the image server.
 
-## ⚙️ ComfyUI Setup
+### 🛠️ Advanced Workflow Studio
+*   **Built-in JSON Editor:** Edit ComfyUI workflows directly inside SillyTavern. Includes syntax formatting.
+*   **Variable Injection:** Use simple placeholders like `"*seed*"` or `"*lora*"` to let SillyTavern control your Comfy nodes dynamically.
+*   **Cloud Saving:** Workflows are saved to your SillyTavern server, so they persist across reloads.
 
-You must start ComfyUI with the `--listen` argument (and optionally `--enable-cors-header` if you run into connection issues).
+### ⚡ Performance & UX
+*   **Zero-Lag Chat:** High-res images are automatically compressed to optimized JPEGs before being added to the chat history, keeping SillyTavern fast.
+*   **Live Progress Bar:** a subtle, animated progress bar tracks the generation status (Prompting -> Rendering -> Downloading).
+*   **Swipe-to-Vary:** Swipe right on any generated image in the chat to instantly trigger a variation of that specific image.
 
-`run_nvidia_gpu.bat` example:
-bat
+---
+
+## 🔌 Prerequisites & Installation
+
+### 1. ComfyUI Setup (Important!)
+For SillyTavern to talk to ComfyUI, you must launch ComfyUI with specific flags to allow API access.
+
+Edit your `run_nvidia_gpu.bat` (or equivalent script) and add:
+`--listen --enable-cors-header`
+
+**Example:**
+```bat
 .\python_embeded\python.exe -s ComfyUI\main.py --windows-standalone-build --listen --enable-cors-header
+```
 
-## 📝 How to Use Workflows
+### 2. Install Extension
+1.  Open **SillyTavern**.
+2.  Navigate to **Extensions** -> **Install Extension**.
+3.  Paste the URL of this repository.
+4.  Click **Install**.
+5.  **Refresh/Reload** the SillyTavern page.
 
-1.  Go to **Extensions** -> **Image Gen Kazuma**.
-2.  To use your own workflow:
-    *   In ComfyUI, create your workflow.
-    *   Enable **Dev Mode Options** in ComfyUI settings.
-    *   Click **Save (API Format)**.
-    *   In SillyTavern, click **New Workflow** (+) and name it.
-    *   Click **Edit** (Pen icon) and paste your JSON.
-    *   **IMPORTANT:** Replace specific values with the placeholders below so the extension can control them.
+---
 
-### 🧩 Workflow Placeholders
+## 📖 The Workflow Studio (Tutorial)
 
-Use these strings inside your workflow JSON values strings (e.g., `"inputs": { "text": "*input*" }`).
+This extension does not use "hardcoded" generation methods. Instead, it injects values into **your** specific ComfyUI workflows.
 
-| Placeholder | Description |
-| :--- | :--- |
-| `"*input*"` | The positive prompt. |
-| `"*ninput*"` | The negative prompt. |
-| `"*seed*"` | The seed number. |
-| `"*model*"` | Selected Checkpoint filename. |
-| `"*sampler*"` | Selected Sampler name. |
-| `"*steps*"` | Sampling steps (e.g. 20). |
-| `"*cfg*"` | CFG Scale value. |
-| `"*denoise*"` | Denoising strength (0.0 - 1.0). |
-| `"*width*"` | Image width. |
-| `"*height*"` | Image height. |
-| `"*lora*"` | LoRA 1 filename. |
-| `"*lorawt*"` | LoRA 1 weight. |
-| `"*lora2*"` | LoRA 2 filename. |
-| `"*lorawt2*"` | LoRA 2 weight. |
-|  *(...up to lora4)* | |
+### Step 1: Prepare Workflow in ComfyUI
+1.  Open ComfyUI in your browser.
+2.  Enable **Dev Mode Options** (Click the Gear icon -> Turn on "Enable Dev mode Options").
+3.  Build your graph normally.
+4.  **Crucial:** Click **"Save (API Format)"**. Do not use the standard "Save" button.
 
-## 🖼️ Usage Tips
+### Step 2: Import into SillyTavern
+1.  Open the **Image Gen Kazuma** drawer settings.
+2.  Under **ComfyUI Server**, look for **Active Workflow**.
+3.  Click the **+ (New)** button to create a blank file, or click **Import** inside the editor.
+4.  Click the **Pen Icon** to open the **Workflow Studio**.
 
-*   **Manual Gen:** Click the **Paintbrush** 🖌️ icon near the chat bar to visualize the last message.
-*   **Diagnostic:** Enable "Diagnostic Mode" in settings to see exactly what prompt the LLM is writing before it sends to ComfyUI.
-*   **Compression:** Keep "Compress Images" enabled to keep imge size small if you want.
+### Step 3: Inject Placeholders
+In the Workflow Studio, you will see the raw JSON. You must replace specific hardcoded numbers or text with **Placeholders**.
+
+**Example:**
+*   *Before:* `"inputs": { "text": "1girl, sitting", ... }`
+*   *After:* `"inputs": { "text": "*input*", ... }`
+
+**Available Placeholders:**
+
+| Placeholder | Replaces | Description |
+| :--- | :--- | :--- |
+| `"*input*"` | Positive Prompt | The text generated by the LLM based on chat context. |
+| `"*ninput*"` | Negative Prompt | Your custom negative prompt from settings. |
+| `"*seed*"` | Seed Number | Allows SillyTavern to randomize/fix seeds. |
+| `"*steps*"` | Step Count | Linked to the Steps slider. |
+| `"*cfg*"` | CFG Float | Linked to the CFG slider. |
+| `"*model*"` | Checkpoint Name | Linked to the Model dropdown. |
+| `"*sampler*"` | Sampler Name | Linked to the Model dropdown. |
+| `"*width*"` | Width Integer | Image resolution width. |
+| `"*height*"` | Height Integer | Image resolution height. |
+| `"*lora*"` | LoRA Name | **LoRA Slot 1** filename. |
+| `"*lorawt*"` | LoRA Strength | **LoRA Slot 1** weight (model & clip). |
+| `"*lora2*"` | LoRA Name | **LoRA Slot 2** filename. |
+| `"*lorawt2*"` | LoRA Strength | **LoRA Slot 2** weight. |
+
+*(Supported up to `*lora4*` / `*lorawt4*`)*
+
+5.  Click **Save Changes**.
+
+---
+
+## 🎨 Prompting & Automation Guide
+
+### 1. Smart Prompt Logic
+Under the **Automation** section, you can choose how the extension generates prompts.
+
+*   **Strategy: Use Current Active Preset** (Recommended)
+    *   This uses your *current* SillyTavern text generation preset.
+    *   **Prompt Builder:** A menu will appear allowing you to select:
+        *   **Model Style:** Tells the LLM to write in *Booru Tags* (for Anime/Pony models) or *Natural Prose* (for SDXL/Realism).
+        *   **Camera Perspective:** Forces the image to be *Scene-focused*, *Character-focused*, or *POV*.
+    *   The extension constructs a complex system instruction behind the scenes to ensure the LLM adheres to these constraints.
+
+*   **Strategy: Use Specific Preset** (Legacy)
+    *   Forces SillyTavern to switch to a specific Text Completion preset (e.g., "Stable Diffusion Helper") just for the image prompt generation, then switches back.
+
+### 2. Auto-Generation
+*   **Enable:** Automatically generates an image after the character replies.
+*   **Frequency:** Set to `1` for every message, or `3` to generate every 3rd message.
+
+### 3. Manual Generation
+*   Click the **Paintbrush Icon 🖌️** next to the chat input bar to visualize the most recent message immediately.
+
+### 4. LoRA Lab
+*   The extension supports **4 dedicated LoRA slots**.
+*   These slots are saved **per workflow**. If you switch from your "Pony" workflow to your "SD1.5" workflow, the LoRA selectors will update to reflect what you last used on that specific workflow.
+
+---
+
+## ❓ Troubleshooting
+
+**Q: The extension connects, but images don't appear.**
+A: Check the **Diagnostic Mode**. If the prompt looks correct, open your browser console (F12) and check for "Comfy Error". Usually, this means your workflow JSON is missing a placeholder or has an invalid node.
+
+**Q: "Save (API Format)" isn't visible in ComfyUI.**
+A: You must go to ComfyUI Settings (Gear icon) and check "Enable Dev mode Options".
+
+**Q: My settings keep changing when I swap workflows.**
+A: This is intended! The **Context Switcher** feature ensures that settings appropriate for one model (e.g., 1024x1024 for SDXL) don't accidentally break another workflow (e.g., 512x512 for SD1.5).
+
+---
 
 ## 📜 License
 
-MIT
-
+MIT License. Free to use and modify.
