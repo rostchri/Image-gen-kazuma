@@ -414,7 +414,7 @@ async function fetchComfyLists() {
             if (extension_settings[extensionName].selectedSampler) samplerSel.val(extension_settings[extensionName].selectedSampler);
         }
 
-        const loraRes = await fetch(`${comfyUrl}/object_info/LoraLoader`);
+        const loraRes = await fetch(`${comfyUrl}/object_info/LoraLoader`, mode: "cors", credentials: "include", redirect: "manual");
         if (loraRes.ok) {
             const json = await loraRes.json();
             const files = json['LoraLoader'].input.required.lora_name[0];
