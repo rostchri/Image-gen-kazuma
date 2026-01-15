@@ -92,6 +92,31 @@ const defaultSettings = {
     savedWorkflowStates: {}
 };
 
+// helperfunction to return fetch options
+function getFetchOptions(url, baseOptions = {}) {
+    // checking if url is valid
+    if (!url || typeof url !== 'string') {
+        return baseOptions;
+    }
+
+    // normalize URL (trim whitespace) and check protocol case-insensitive
+    const normalizedUrl = url.trim();
+    const isHttps = normalizedUrl.toLowerCase().startsWith('https://');
+
+    // in case of https, return fetch options containing cors/credentials/redirect
+    // options which are useful for cross-origin requests and silly tavern and comfyui
+    // behind a reverse proxy, probably secured by forward authentication (authelia, etc...)
+    if (isHttps) {
+        return {
+            ...baseOptions,
+            mode: "cors",
+            credentials: "include",
+            redirect: "follow"
+        };
+    }
+    return baseOptions;
+}
+
 async function loadSettings() {
     if (!extension_settings[extensionName]) extension_settings[extensionName] = {};
     for (const key in defaultSettings) {
@@ -414,7 +439,7 @@ async function fetchComfyLists() {
             if (extension_settings[extensionName].selectedSampler) samplerSel.val(extension_settings[extensionName].selectedSampler);
         }
 
-        const loraRes = await fetch(`${comfyUrl}/object_info/LoraLoader`, { mode: "cors", credentials: "include", redirect: "follow", headers: { "Accept": "application/json" }});
+        const loraRes = await fetch(`${comfyUrl}/object_info/LoraLoader`, getFetchOptions(comfyUrl, { headers: { "Accept": "application/json" }}));
         if (loraRes.ok) {
             const json = await loraRes.json();
             const files = json['LoraLoader'].input.required.lora_name[0];
@@ -558,7 +583,7 @@ async function generateWithComfy(positivePrompt, target = null) {
 
     try {
         toastr.info("Sending to ComfyUI...", "Image Gen Kazuma");
-        const res = await fetch(`${url}/prompt`, { method: "POST", headers: { "Content-Type": "application/json", "Accept": "application/json" }, mode: "cors", credentials: "include", redirect: "follow", body: JSON.stringify({ prompt: workflow }) });
+        const res = await fetch(`${url}/prompt`, getFetchOptions(url, { method: "POST", headers: { "Content-Type": "application/json", "Accept": "application/json" }, body: JSON.stringify({ prompt: workflow }) }));
         if(!res.ok) throw new Error("Failed");
         const data = await res.json();
         await waitForGeneration(url, data.prompt_id, positivePrompt, target);
@@ -635,7 +660,7 @@ async function waitForGeneration(baseUrl, promptId, positivePrompt, target) {
 
      const checkInterval = setInterval(async () => {
         try {
-            const h = await (await fetch(`${baseUrl}/history/${promptId}`)).json();
+            const h = await (await fetch(`${baseUrl}/history/${promptId}`, getFetchOptions(baseUrl))).json();
             if (h[promptId]) {
                 clearInterval(checkInterval);
                 const outputs = h[promptId].outputs;
